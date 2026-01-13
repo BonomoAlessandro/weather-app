@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Weather Dashboard
+
+A modern weather dashboard displaying real-time weather conditions for cities around the world.
+
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![React](https://img.shields.io/badge/React-19-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)
+
+## Features
+
+- Real-time weather data for 5 cities: Zürich, London, New York, Tokyo, Cape Town
+- Dynamic theming based on weather conditions (sunny, cloudy, rainy, stormy, snowy, misty, night)
+- Local time display for each city
+- Responsive grid layout (1/2/3 columns)
+- Server-side rendering with 5-minute cache
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **API**: [Open-Meteo](https://open-meteo.com/) (free, no API key required)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+weather-app/
+├── app/
+│   ├── layout.tsx      # Root layout
+│   ├── page.tsx        # Main dashboard
+│   ├── loading.tsx     # Loading state
+│   ├── error.tsx       # Error boundary
+│   └── globals.css     # Global styles
+├── components/
+│   ├── WeatherCard.tsx     # City weather card
+│   ├── WeatherDetails.tsx  # Weather metrics
+│   ├── WeatherIcon.tsx     # SVG weather icons
+│   ├── CityGrid.tsx        # Responsive grid
+│   ├── Header.tsx          # App header
+│   ├── LoadingCard.tsx     # Skeleton loader
+│   └── ErrorCard.tsx       # Error display
+├── lib/
+│   ├── constants.ts    # Cities, themes, WMO codes
+│   ├── weather-api.ts  # API fetching
+│   └── weather-utils.ts # Utilities
+└── types/
+    └── weather.ts      # TypeScript interfaces
+```
 
-## Learn More
+## Configuration
 
-To learn more about Next.js, take a look at the following resources:
+### Cities
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Edit `lib/constants.ts` to modify the city list:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```typescript
+export const CITIES: CityConfig[] = [
+  { name: 'Zürich', country: 'CH', latitude: 47.3769, longitude: 8.5417, timezone: 'Europe/Zurich' },
+  // Add more cities...
+];
+```
 
-## Deploy on Vercel
+### Cache Duration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Weather data is cached for 5 minutes. Modify in `lib/constants.ts`:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```typescript
+export const CACHE_DURATION = 300; // seconds
+```
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+
+## API
+
+This project uses the [Open-Meteo API](https://open-meteo.com/), which is:
+- Free and open source
+- No API key required
+- No rate limits for reasonable usage
+
+## License
+
+MIT
