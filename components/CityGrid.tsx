@@ -1,4 +1,4 @@
-import { CityWeatherData, WeatherResult } from '@/types/weather';
+import { WeatherResult } from '@/types/weather';
 import { WeatherCard } from './WeatherCard';
 import { ErrorCard } from './ErrorCard';
 
