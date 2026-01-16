@@ -35,7 +35,7 @@ jobs:
       - name: Run tests
         run: npm run test
 
-  deploy:
+  build:
     needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
@@ -49,5 +49,15 @@ jobs:
         run: npm ci
       - name: Build project
         run: npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy
         run: echo "Deploying..."
