@@ -49,14 +49,16 @@ jobs:
         run: npm ci
       - name: Build project
         run: npm run build
+      - name: Prepare standalone package
+        run: |
+          mkdir -p .next/standalone/.next
+          cp -r .next/static .next/standalone/.next/static
+          cp -r public .next/standalone/public
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-files
-          path: |
-            .next/standalone
-            .next/static
-            public/
+          path: .next/standalone
 
   deploy:
     needs: build
