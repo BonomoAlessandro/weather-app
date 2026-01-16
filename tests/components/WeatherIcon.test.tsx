@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { WeatherIcon } from '@/components/WeatherIcon';
 import type { WeatherTheme } from '@/types/weather';
 
