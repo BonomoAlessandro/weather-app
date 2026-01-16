@@ -1,4 +1,5 @@
 import { WeatherTheme } from '@/types/weather';
+import { JSX } from "react";
 
 interface WeatherIconProps {
   theme: WeatherTheme;
