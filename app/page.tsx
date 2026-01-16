@@ -3,8 +3,8 @@ import { getDominantTheme } from '@/lib/weather-utils';
 import { CityGrid, Header } from '@/components';
 import { CityWeatherData } from '@/types/weather';
 
-// Revalidate every 5 minutes
-export const revalidate = 300;
+// Revalidate every 1 minute
+export const revalidate = 60;
 
 const backgroundGradients = {
   sunny: 'from-amber-200 via-orange-100 to-yellow-50',
@@ -52,7 +52,7 @@ export default async function Home() {
             }
           `}
         >
-          Data from Open-Meteo • Refreshes every 5 minutes
+          Data from Open-Meteo
         </p>
       </footer>
     </div>
