@@ -36,16 +36,7 @@ export function CityProvider({ children }: CityProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load cities from localStorage on mount
-  useEffect(() => {
-    const storedCities = loadCities();
-    if (storedCities && storedCities.length > 0) {
-      setCities(storedCities);
-    }
-    setIsInitialized(true);
-  }, []);
-
-  // Fetch weather data when cities change
+  // Fetch weather for given cities
   const fetchWeather = useCallback(async (citiesToFetch: CityConfig[]) => {
     if (citiesToFetch.length === 0) {
       setWeatherData([]);
@@ -64,12 +55,17 @@ export function CityProvider({ children }: CityProviderProps) {
     }
   }, []);
 
-  // Fetch weather when cities change and initialized
+  // Load cities from localStorage and fetch initial weather data
   useEffect(() => {
-    if (isInitialized) {
-      fetchWeather(cities);
-    }
-  }, [cities, isInitialized, fetchWeather]);
+    const storedCities = loadCities();
+    const initialCities = storedCities && storedCities.length > 0
+      ? storedCities
+      : DEFAULT_CITIES;
+
+    setCities(initialCities);
+    fetchWeather(initialCities);
+    setIsInitialized(true);
+  }, [fetchWeather]);
 
   // Save cities to localStorage whenever they change (after initialization)
   useEffect(() => {
@@ -78,29 +74,49 @@ export function CityProvider({ children }: CityProviderProps) {
     }
   }, [cities, isInitialized]);
 
-  const addCity = useCallback((city: CityConfig) => {
-    setCities((prev) => {
-      // Check for duplicates by coordinates
-      const isDuplicate = prev.some(
-        (c) =>
-          Math.abs(c.latitude - city.latitude) < 0.01 &&
-          Math.abs(c.longitude - city.longitude) < 0.01
-      );
-      if (isDuplicate) {
-        return prev;
-      }
-      return [...prev, city];
-    });
-  }, []);
+  // Add city - only fetches weather for the new city
+  const addCity = useCallback(async (city: CityConfig) => {
+    // Check for duplicates by coordinates
+    const isDuplicate = cities.some(
+      (c) =>
+        Math.abs(c.latitude - city.latitude) < 0.01 &&
+        Math.abs(c.longitude - city.longitude) < 0.01
+    );
+    if (isDuplicate) {
+      return;
+    }
 
+    // Add city to list
+    setCities((prev) => [...prev, city]);
+
+    // Fetch only the new city's weather
+    try {
+      const results = await fetchWeatherForCities([city]);
+      if (results.length > 0) {
+        setWeatherData((prev) => [...prev, results[0]]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch weather for new city:', error);
+    }
+  }, [cities]);
+
+  // Remove city - no API calls, just filter existing data
   const removeCity = useCallback((cityName: string) => {
     setCities((prev) => prev.filter((c) => c.name !== cityName));
+    setWeatherData((prev) =>
+      prev.filter((r) =>
+        r.success ? r.data.city !== cityName : r.city !== cityName
+      )
+    );
   }, []);
 
+  // Reset to defaults - fetches all default cities
   const resetToDefaults = useCallback(() => {
     setCities(DEFAULT_CITIES);
-  }, []);
+    fetchWeather(DEFAULT_CITIES);
+  }, [fetchWeather]);
 
+  // Manual refresh - fetches all current cities
   const refreshWeather = useCallback(() => {
     fetchWeather(cities);
   }, [cities, fetchWeather]);
