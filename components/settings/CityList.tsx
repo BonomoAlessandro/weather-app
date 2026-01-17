@@ -36,7 +36,7 @@ export function CityList() {
               bg-white/50 rounded-xl
               border border-slate-200
               divide-y divide-slate-100
-              max-h-64 overflow-y-auto
+              max-h-72 overflow-y-auto
             "
           >
             {cities.map((city) => (

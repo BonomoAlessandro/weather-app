@@ -58,13 +58,14 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
-            <h2 className="text-lg font-semibold text-slate-800">
+          <div className="relative px-6 py-5 border-b border-slate-200">
+            <h2 className="text-2xl font-semibold text-slate-800 text-center">
               Manage Cities
             </h2>
             <button
               onClick={onClose}
               className="
+                absolute top-4 right-4
                 p-2 rounded-lg
                 text-slate-400 hover:text-slate-600
                 hover:bg-slate-100
