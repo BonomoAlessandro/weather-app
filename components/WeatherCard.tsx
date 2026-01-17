@@ -81,8 +81,11 @@ export function WeatherCard({ weather, index = 0 }: WeatherCardProps) {
         hover:shadow-md
       `}
       style={{
+        animationName: 'fadeInUp',
+        animationDuration: '0.5s',
+        animationTimingFunction: 'ease-out',
+        animationFillMode: 'backwards',
         animationDelay: `${index * 80}ms`,
-        animation: 'fadeInUp 0.5s ease-out backwards',
       }}
     >
       <div className="p-6">

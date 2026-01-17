@@ -18,7 +18,9 @@ export default function Error({ error, reset }: ErrorProps) {
           text-center
         "
         style={{
-          animation: 'fadeInUp 0.6s ease-out',
+          animationName: 'fadeInUp',
+          animationDuration: '0.6s',
+          animationTimingFunction: 'ease-out',
         }}
       >
         {/* Error icon */}

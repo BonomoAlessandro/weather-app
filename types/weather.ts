@@ -72,3 +72,6 @@ export interface WeatherThemeConfig {
 export type WeatherResult =
   | { success: true; data: CityWeatherData }
   | { success: false; city: string; error: string };
+
+// Re-export geocoding types for convenience
+export type { GeocodingResult } from '@/lib/geocoding-api';

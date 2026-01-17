@@ -4,4 +4,7 @@ export { WeatherIcon } from './WeatherIcon';
 export { CityGrid } from './CityGrid';
 export { LoadingCard } from './LoadingCard';
 export { Header } from './Header';
+export { Footer } from './Footer';
 export { ErrorCard } from './ErrorCard';
+export { WeatherDashboard } from './WeatherDashboard';
+export * from './settings';

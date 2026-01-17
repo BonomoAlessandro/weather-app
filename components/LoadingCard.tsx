@@ -11,8 +11,11 @@ export function LoadingCard({ index = 0 }: LoadingCardProps) {
         p-[2px] shadow-xl
       "
       style={{
+        animationName: 'fadeInUp',
+        animationDuration: '0.6s',
+        animationTimingFunction: 'ease-out',
+        animationFillMode: 'backwards',
         animationDelay: `${index * 100}ms`,
-        animation: 'fadeInUp 0.6s ease-out backwards',
       }}
     >
       {/* Shimmer effect overlay */}
@@ -23,7 +26,9 @@ export function LoadingCard({ index = 0 }: LoadingCardProps) {
           animate-shimmer
         "
         style={{
-          animation: 'shimmer 2s infinite',
+          animationName: 'shimmer',
+          animationDuration: '2s',
+          animationIterationCount: 'infinite',
         }}
       />
 

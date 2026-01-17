@@ -1,26 +1,37 @@
+import { WeatherTheme } from '@/types/weather';
+
 interface HeaderProps {
   title?: string;
   subtitle?: string;
+  theme?: WeatherTheme;
 }
 
 export function Header({
   title = 'Weather Dashboard',
   subtitle = 'Current conditions around the world',
+  theme = 'sunny',
 }: HeaderProps) {
+  const isDark = theme === 'stormy' || theme === 'night';
+
   return (
     <header className="w-full pt-12 pb-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto text-center">
         {/* Main title with gradient text effect */}
         <h1
-          className="
+          className={`
             text-4xl sm:text-5xl lg:text-6xl
             font-extralight tracking-tight
-            bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800
-            bg-clip-text text-transparent
+            bg-gradient-to-r bg-clip-text text-transparent
             mb-3
-          "
+            ${isDark
+              ? 'from-white via-slate-200 to-white'
+              : 'from-slate-800 via-slate-600 to-slate-800'
+            }
+          `}
           style={{
-            animation: 'fadeInDown 0.8s ease-out',
+            animationName: 'fadeInDown',
+            animationDuration: '0.8s',
+            animationTimingFunction: 'ease-out',
           }}
         >
           {title}
@@ -28,13 +39,18 @@ export function Header({
 
         {/* Subtitle */}
         <p
-          className="
-            text-slate-500 text-sm sm:text-base
+          className={`
+            text-sm sm:text-base
             font-medium tracking-wide uppercase
             letter-spacing-widest
-          "
+            ${isDark ? 'text-slate-300' : 'text-slate-500'}
+          `}
           style={{
-            animation: 'fadeInUp 0.8s ease-out 0.2s backwards',
+            animationName: 'fadeInUp',
+            animationDuration: '0.8s',
+            animationTimingFunction: 'ease-out',
+            animationDelay: '0.2s',
+            animationFillMode: 'backwards',
           }}
         >
           {subtitle}
@@ -42,12 +58,17 @@ export function Header({
 
         {/* Decorative line */}
         <div
-          className="
+          className={`
             mt-6 mx-auto w-24 h-[2px]
-            bg-gradient-to-r from-transparent via-slate-300 to-transparent
-          "
+            bg-gradient-to-r from-transparent to-transparent
+            ${isDark ? 'via-slate-500' : 'via-slate-300'}
+          `}
           style={{
-            animation: 'scaleIn 0.6s ease-out 0.4s backwards',
+            animationName: 'scaleIn',
+            animationDuration: '0.6s',
+            animationTimingFunction: 'ease-out',
+            animationDelay: '0.4s',
+            animationFillMode: 'backwards',
           }}
         />
       </div>

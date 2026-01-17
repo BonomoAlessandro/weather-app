@@ -1,12 +1,15 @@
 import { CityConfig, WeatherTheme, WeatherThemeConfig } from '@/types/weather';
 
-export const CITIES: CityConfig[] = [
+export const DEFAULT_CITIES: CityConfig[] = [
   { name: 'Zürich', country: 'CH', latitude: 47.3769, longitude: 8.5417, timezone: 'Europe/Zurich' },
   { name: 'London', country: 'GB', latitude: 51.5074, longitude: -0.1278, timezone: 'Europe/London' },
   { name: 'New York', country: 'US', latitude: 40.7128, longitude: -74.006, timezone: 'America/New_York' },
   { name: 'Tokyo', country: 'JP', latitude: 35.6762, longitude: 139.6503, timezone: 'Asia/Tokyo' },
   { name: 'Cape Town', country: 'ZA', latitude: -33.9249, longitude: 18.4241, timezone: 'Africa/Johannesburg' },
 ];
+
+// Backward compatibility alias
+export const CITIES = DEFAULT_CITIES;
 
 export const WEATHER_THEMES: Record<WeatherTheme, WeatherThemeConfig> = {
   sunny: {

@@ -13,8 +13,11 @@ export function ErrorCard({ cityName, error, index = 0 }: ErrorCardProps) {
         p-[2px] shadow-xl shadow-rose-200/30
       "
       style={{
+        animationName: 'fadeInUp',
+        animationDuration: '0.6s',
+        animationTimingFunction: 'ease-out',
+        animationFillMode: 'backwards',
         animationDelay: `${index * 100}ms`,
-        animation: 'fadeInUp 0.6s ease-out backwards',
       }}
     >
       <div

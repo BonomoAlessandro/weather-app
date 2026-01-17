@@ -56,6 +56,25 @@ export async function fetchWeatherForAllCities(): Promise<WeatherResult[]> {
   });
 }
 
+export async function fetchWeatherForCities(
+  cities: CityConfig[]
+): Promise<WeatherResult[]> {
+  const results = await Promise.allSettled(
+    cities.map((city) => fetchWeatherForCity(city))
+  );
+
+  return results.map((result, index) => {
+    if (result.status === 'fulfilled') {
+      return { success: true as const, data: result.value };
+    }
+    return {
+      success: false as const,
+      city: cities[index].name,
+      error: result.reason?.message || 'Unknown error',
+    };
+  });
+}
+
 function transformWeatherData(
   data: OpenMeteoResponse,
   city: CityConfig
