@@ -145,7 +145,7 @@ describe('WeatherCard', () => {
       const weather = createMockWeatherData();
       const { container } = render(<WeatherCard weather={weather} />);
       const card = container.firstChild as HTMLElement;
-      expect(card.style.animation).toContain('fadeInUp');
+      expect(card.style.animationName.toLowerCase()).toBe('fadeinup');
     });
   });
 
