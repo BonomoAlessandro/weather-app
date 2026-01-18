@@ -1,9 +1,45 @@
 'use client';
 
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { useCities } from '@/context/CityContext';
+import { SortableCityItem } from './SortableCityItem';
 
 export function CityList() {
-  const { cities, removeCity, resetToDefaults } = useCities();
+  const { cities, removeCity, reorderCities, resetToDefaults } = useCities();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const cityIds = cities.map(
+    (city) => `${city.name}-${city.latitude}-${city.longitude}`
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = cityIds.indexOf(active.id as string);
+      const newIndex = cityIds.indexOf(over.id as string);
+      reorderCities(oldIndex, newIndex);
+    }
+  }
 
   return (
     <div>
@@ -39,50 +75,24 @@ export function CityList() {
               max-h-72 overflow-y-auto
             "
           >
-            {cities.map((city) => (
-              <div
-                key={`${city.name}-${city.latitude}-${city.longitude}`}
-                className="
-                  flex items-center justify-between
-                  px-4 py-3
-                  group
-                  hover:bg-white/80
-                  transition-colors duration-150
-                "
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={cityIds}
+                strategy={verticalListSortingStrategy}
               >
-                <div className="flex items-center gap-3">
-                  <span className="font-medium text-slate-800">{city.name}</span>
-                  <span className="text-sm text-slate-400">{city.country}</span>
-                </div>
-                <button
-                  onClick={() => removeCity(city.name)}
-                  className="
-                    p-1.5 rounded-lg
-                    text-slate-400 hover:text-red-500
-                    hover:bg-red-50
-                    opacity-0 group-hover:opacity-100
-                    transition-all duration-200
-                  "
-                  aria-label={`Remove ${city.name}`}
-                  title={`Remove ${city.name}`}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18 18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-            ))}
+                {cities.map((city) => (
+                  <SortableCityItem
+                    key={`${city.name}-${city.latitude}-${city.longitude}`}
+                    city={city}
+                    onRemove={removeCity}
+                  />
+                ))}
+              </SortableContext>
+            </DndContext>
           </div>
 
           <div className="mt-4 pt-4 border-t border-slate-200">

@@ -20,6 +20,7 @@ interface CityContextValue {
   isInitialized: boolean;
   addCity: (city: CityConfig) => void;
   removeCity: (cityName: string) => void;
+  reorderCities: (fromIndex: number, toIndex: number) => void;
   resetToDefaults: () => void;
   refreshWeather: () => void;
 }
@@ -110,6 +111,25 @@ export function CityProvider({ children }: CityProviderProps) {
     );
   }, []);
 
+  // Reorder cities - updates both cities and weatherData arrays
+  const reorderCities = useCallback((fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex) return;
+
+    setCities((prev) => {
+      const newCities = [...prev];
+      const [removed] = newCities.splice(fromIndex, 1);
+      newCities.splice(toIndex, 0, removed);
+      return newCities;
+    });
+
+    setWeatherData((prev) => {
+      const newData = [...prev];
+      const [removed] = newData.splice(fromIndex, 1);
+      newData.splice(toIndex, 0, removed);
+      return newData;
+    });
+  }, []);
+
   // Reset to defaults - fetches all default cities
   const resetToDefaults = useCallback(() => {
     setCities(DEFAULT_CITIES);
@@ -130,6 +150,7 @@ export function CityProvider({ children }: CityProviderProps) {
         isInitialized,
         addCity,
         removeCity,
+        reorderCities,
         resetToDefaults,
         refreshWeather,
       }}

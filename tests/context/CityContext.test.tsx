@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { CityProvider, useCities } from '@/context/CityContext';
 import { fetchWeatherForCities } from '@/lib/weather-api';
-import { loadCities, saveCities } from '@/lib/storage';
+import { loadCities } from '@/lib/storage';
 import { DEFAULT_CITIES } from '@/lib/constants';
 import { createMockCityConfig, createSuccessResult, createMockWeatherData } from '../mocks/weather-data';
 import type { ReactNode } from 'react';
