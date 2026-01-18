@@ -84,7 +84,7 @@ function DashboardContent() {
             </div>
           </div>
         ) : (
-          <CityGrid results={weatherData} />
+          <CityGrid />
         )}
       </main>
 
